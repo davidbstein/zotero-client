@@ -1,2 +1,10 @@
-# zotero-client
-a custom zotero client that augments the existing one via API and filesystem.
+# Jurism / Zotero tool for law stuff
+
+You need to create a file named `.secrets.json` for now.
+
+```
+{
+  "zoteroAPIkey": "your-api-key",
+  "zoteroUserID": "your-user-id",
+}
+```
