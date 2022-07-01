@@ -7,6 +7,9 @@ import _ from "lodash";
 
 import { ipcRenderer } from "electron";
 
+import * as zoteroInterface from "./zotero-interface";
+
+console.log("loading");
 ipcRenderer.on("menu-clicked", (event, { command, ...detail }) => {
   console.log("menu-clicked", command, detail);
 });
@@ -28,3 +31,4 @@ function App() {
 ReactDOM.render(<App />, document.getElementById("app"));
 
 window._WINDOW_ID = getUrlParams().windowId;
+console.log("loaded")

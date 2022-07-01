@@ -22,11 +22,12 @@
     "wipe": "rm -rf dist && rm -rf node_modules && rm -rf yarn.lock && yarn install"
   },
   "dependencies": {
-    "source-map-support": "^0.5.16",
-    "zotero-api-client": "^0.38.0"
+    "electron-fetch": "^1.7.4",
+    "source-map-support": "^0.5.16"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.16.7",
+    "babel": "^6.23.0",
     "electron": "^11.0.1",
     "electron-builder": "^23.0.3",
     "electron-webpack": "^2.8.2",
