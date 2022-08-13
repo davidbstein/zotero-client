@@ -21,7 +21,17 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
     "wipe": "rm -rf dist && rm -rf node_modules && rm -rf yarn.lock && yarn install"
   },
+  "electronWebpack": {
+    "renderer": {
+      "webpackConfig": "webpack.renderer.additions.js"
+    }
+  },
   "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2",
+    "redux": "^4.2.0",
+    "@reduxjs/toolkit": "^1.8.4",
     "electron-fetch": "^1.7.4",
     "source-map-support": "^0.5.16"
   },
@@ -30,10 +40,8 @@
     "babel": "^6.23.0",
     "electron": "^11.0.1",
     "electron-builder": "^23.0.3",
-    "electron-webpack": "^2.8.2",
+    "electron-webpack": "*",
     "node-gyp": "^9.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "sass": "^1.49.7",
     "sass-loader": "^10.1.1",
     "webpack": "~4.42.1"
