@@ -1,6 +1,6 @@
 
 import { useSelector, useDispatch } from 'react-redux'
-import Counter from './views/Counter'
+import MainView from '@/views/MainView'
 import React from 'react'
 
 function getUrlParams() {
@@ -12,5 +12,5 @@ function getUrlParams() {
 }
 
 export default function App() {
-  return <div id="container">Hello World<Counter /></div>;
+  return <div id="container">Hello World<MainView /></div>;
 }

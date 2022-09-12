@@ -2,6 +2,16 @@ import * as fs from "fs";
 import { app, ipcMain } from "electron";
 import fetch from "electron-fetch";
 
+/**
+ * 
+ *  Header <Last-Modified-Version> will let me not re-load everything every time.
+ *  Header <If-Modified-Since-Version> will check for updates
+ *  (https://www.zotero.org/support/dev/web_api/v3/syncing)
+ * 
+ * 
+ * 
+ */
+
 const homeDir = app.getPath("home");
 const secrets = JSON.parse(fs.readFileSync(`${homeDir}/.secrets.json`, "utf8"));
 const USER_ID = secrets.zotero.user_library_id;
@@ -27,21 +37,37 @@ async function getItems({group_id}) {
   });
 }
 
-async function doZoteroGetRequest({group_id, path, params}) {
+async function doZoteroGetRequest({method="GET", group_id, path, params}) {
   const userOrGroupPrefix = group_id ? "group" : "users";
   const id_ = group_id ? group_id : USER_ID;
   const url = `https://api.zotero.org/${userOrGroupPrefix}/${id_}/${path}`;
+
   const headers = {
     "Content-Type": "application/json",
     "Zotero-API-Version": "3",
     "Zotero-API-Key": USER_TOKEN
   }
   console.log(url);
-  const resp = await fetch(url, {
-    method: "GET",
-    headers,
-  });
-  return await resp.json();
+  try {
+    let total=100;
+    const to_ret = [];
+    while (to_ret.length < total && to_ret.length < 100){
+      const params = new URLSearchParams({
+        limit: 100,
+        start: to_ret.length
+      });
+      const resp = await fetch(url, {
+        method,
+        headers,
+      });
+      total = resp.headers.get("total-results")
+      to_ret.push(...(await resp.json()));
+      console.log("to_ret", to_ret, to_ret.length, total);
+    }
+    return to_ret;
+  } catch (e) {
+    return {"error": `${e}`}
+  }
 } 
 
 ipcMain.on("zotero-request", async (event, args) => {
@@ -49,12 +75,3 @@ ipcMain.on("zotero-request", async (event, args) => {
   event.returnValue = JSON.stringify({response: await doZoteroGetRequest(args)});
 }); 
 
-ipcMain.on("zotero-groups", async (event, args) => {
-  console.log("zotero-groups");
-  event.returnValue = JSON.stringify({response: await getGroups()});
-});
-
-ipcMain.on("zotero-items", async (event, args={}) => {
-  console.log("zotero-items");
-  event.returnValue = JSON.stringify({response: await getItems(args)});
-});
