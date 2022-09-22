@@ -218,9 +218,10 @@ async function doZoteroRequest({method="GET", group_id, path, params}) {
     if (["items", "tags", "collections"].indexOf(path) > -1) {
       await doZoteroGetRequest({path, params, group_id, last_versionNo});
       return await getObjects(path, group_id || USER_ID);
+    } else if (path === "groups") {
+      const resp = await _doZoteroGet({path, prefix:`users/${USER_ID}`});
+      return await resp.json();
     }
-  } else if (path === "groups") {
-    _doZoteroGet({path, prefix:`users/${USER_ID}`});
   }
 }
 

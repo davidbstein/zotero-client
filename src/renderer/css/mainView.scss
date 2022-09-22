@@ -1,0 +1,50 @@
+.resizable-split-window-container {
+  position: absolute;
+  display: flex;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  .split-pane {
+    overflow: scroll;
+  }
+  .splitter {
+    &.hidden {
+      background-color: darkgray;
+    }
+    background-color: #e6e6e6;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    &:hover {
+      background-color: #888888;
+    }
+  }
+  &.vertical {
+    flex-direction: column;
+    height: 100%;
+    >.splitter {
+      &.hidden {
+        height: .5em;
+      }
+      width: 100%;
+      height: 5px;
+      cursor: row-resize;
+    }
+  }
+  &.horizontal {
+    flex-direction: row;
+    width: 100%;
+    >.splitter {
+      &.hidden {
+        width: .5em;
+      }
+      width: 5px;
+      height: 100%;
+      cursor: col-resize;
+    }
+  }
+  .split-pane {
+    position: relative;
+  }
+}

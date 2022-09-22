@@ -2,23 +2,34 @@ import { createSlice } from '@reduxjs/toolkit'
 import zoteroClient from '@/utilities/zotero-interface'
 
 export const zoteroSlice = createSlice({
-  name: 'counter',
+  name: 'zotero',
   initialState: {
     groups: zoteroClient.groups(),
-    user: {
-      items: zoteroClient.items(),
-      collections: zoteroClient.collections(),
+    items: {
+      user: zoteroClient.items()
+    },
+    collections: {
+      user: zoteroClient.collections()
     }
   },
   reducers: {
     getGroups: (state) => {
       state.groups = zoteroClient.groups();
+      console.log("groups", state.groups);
     },
     getItems: (state, group_id) => {
-      state.user.items = zoteroClient.items(group_id);
+      if (group_id) {
+        state.items[group_id] = zoteroClient.items(group_id);
+      } else {
+        state.items.user = zoteroClient.items();
+      }
     },
     getCollections: (state, group_id) => {
-      state.user.collections = zoteroClient.collections(group_id);
+      if (group_id) {
+        state.collections[group_id] = zoteroClient.collections(group_id);
+      } else {
+        state.collections.user = zoteroClient.collections();
+      }
     }
   }
 });

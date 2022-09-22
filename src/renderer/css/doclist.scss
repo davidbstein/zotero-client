@@ -1,12 +1,27 @@
-#itemList {
-  .itemrow {
+#item-list-container {
+  .itemrow, .itemheader {
     display: flex;
     border: 1px solid;
     white-space: nowrap;
+    height: 1em;
+  }
+  .itemheader {
+    text-align: center;
+    height: 2em;
+    .item-data-header {
+      padding: .5em;
+      border-radius: .5em;
+      overflow: hidden;
+      background: #ddd;
+      &:hover {
+        background: #ccc;
+        cursor: default;
+      }
+    }
   }
   .item-data-entry {
     border: 1px solid;
-    width: 20%;
+    flex-grow: 1;
     overflow: hidden;
   }
 }

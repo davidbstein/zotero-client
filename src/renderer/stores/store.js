@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './counterSlice'
 import zoteroReducer from './zoteroSlice'
+import appReducer from './appSlice'
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+    app: appReducer,
     zotero: zoteroReducer
   },
 })

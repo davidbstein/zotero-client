@@ -1,0 +1,19 @@
+#group-list-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: auto;
+  padding: 0 10px;
+  height: 100%;
+  width: 100%;
+  gap: .5em;
+  .group-item {
+    border-radius: .2em;
+    background: #ddd;
+    padding: .25em;
+    &:hover {
+      background: #ccc;
+      cursor: default;
+    }
+  }
+}

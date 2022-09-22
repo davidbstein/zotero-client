@@ -13,5 +13,5 @@ function getUrlParams() {
 }
 
 export default function App() {
-  return <div id="container">Hello World<MainView /></div>;
+  return <div id="container"><MainView /></div>;
 }
