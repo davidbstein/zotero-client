@@ -1,12 +1,20 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { zoteroActions } from '@/stores/zoteroSlice'
-
+import "@/css/doclist.scss"
 
 function ItemRow(item) {
-  return <pre>
-    {JSON.stringify(item)}
-  </pre>
+  const data = item.item.data;
+  const meta = item.item.meta;
+  const children = item.item.children;
+  return <div className='itemrow'>
+    <div className="item-data-entry">{children?.length}</div>
+    <div className="item-data-entry">{data.title}</div>
+    <div className="item-data-entry">{data.itemType}</div>
+    <div className="item-data-entry">{JSON.stringify(meta)}</div>
+    <div className="item-data-entry">{data.extra}</div>
+    <div className="item-data-entry">{data.url}</div>
+  </div>
 }
 
 function ItemList() {
@@ -19,7 +27,9 @@ function ItemList() {
         <button onClick={() => dispatch(zoteroActions.getGroups())}>
           reload groups
         </button>
-        {items.map((item) => <ItemRow item={item} key={item.key}/>)}
+        <div id="itemList">
+          {items.map((item) => <ItemRow item={item} key={item.key}/>)}
+        </div>
       </div>
     </div>
   )

@@ -1,0 +1,12 @@
+#itemList {
+  .itemrow {
+    display: flex;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .item-data-entry {
+    border: 1px solid;
+    width: 20%;
+    overflow: hidden;
+  }
+}

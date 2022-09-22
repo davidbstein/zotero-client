@@ -2,6 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import MainView from '@/views/MainView'
 import React from 'react'
+import "@/css/main.scss"
 
 function getUrlParams() {
   const params = {};

@@ -6,7 +6,7 @@ window.zoteroCommand = (args) => {
 
 // import zoteroAPIClient from "zotero-api-client";
 // import * as fs from "fs";
-
+import _ from "lodash";
 
 class ZoteroClient {
   constructor() {
@@ -20,19 +20,31 @@ class ZoteroClient {
   }
   loadGroup(group_id){
     return {
-      tags: this.tags(group_id),
-      items: this.items(group_id),
-      collections: this.collections(group_id),
+      tags: this.tags({group_id}),
+      items: this.items({group_id}),
+      collections: this.collections({group_id}),
     }
   }
-  tags(group_id){
-    return this.request({path:"tags"})
-  }
   items(group_id){
-    return this.request({path:"items"})
+    const items = this.request({group_id, path:"items"})
+    const key_to_items = _.fromPairs(items.map((item) => [item.key, item]));
+    items.map((item) => {
+      if (item.data.parentItem) {
+        const parent = key_to_items[item.data.parentItem];
+        if (!parent.children) {
+          parent.children = [];
+        }
+        parent.children.push(item);
+      } else {
+        item.children = [];
+      }
+    });
+    const items_with_children = items.filter((item) => !item.data.parentItem);
+    console.log(items_with_children);
+    return items_with_children;
   }
   collections(group_id){
-    return this.request({path:"collections"})
+    return this.request({group_id, path:"collections"})
   }
 }
 

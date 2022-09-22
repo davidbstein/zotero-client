@@ -7,25 +7,30 @@ export const zoteroSlice = createSlice({
     groups: zoteroClient.groups(),
     user: {
       items: zoteroClient.items(),
-      tags: zoteroClient.tags(),
       collections: zoteroClient.collections(),
     }
   },
   reducers: {
     getGroups: (state) => {
-      state.value += 1
+      state.groups = zoteroClient.groups();
     },
-    getTags: (state) => {
-      state.value -= 1
+    getItems: (state, group_id) => {
+      state.user.items = zoteroClient.items(group_id);
     },
-    getItems: (state) => {
-      state.value += action.payload
-    },
-    getCollections: (state) => {
-      state.value 
+    getCollections: (state, group_id) => {
+      state.user.collections = zoteroClient.collections(group_id);
     }
-  },
-})
+  }
+});
+
+// setInterval(() => {
+//   zoteroSlice.actions.getItems();
+//   zoteroSlice.actions.getCollections();
+//   for (var group in zoteroClient.groups()) {
+//     zoteroSlice.actions.getItems(group.id);
+//     zoteroSlice.actions.getCollections(group.id);
+//   }
+// }, 1000);
 
 export const zoteroActions = zoteroSlice.actions;
 
