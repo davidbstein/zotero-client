@@ -12,6 +12,7 @@ class ZoteroClient {
   constructor() {
   }
   request({ method, group_id, path, params }) {
+    console.log(`request: ${method}, ${group_id}, ${path}, ${params}`);
     const resp = ipcRenderer.sendSync("zotero-request", {method, group_id, path, params});
     return JSON.parse(resp).response;
   }
@@ -31,10 +32,14 @@ class ZoteroClient {
     items.map((item) => {
       if (item.data.parentItem) {
         const parent = key_to_items[item.data.parentItem];
-        if (!parent.children) {
-          parent.children = [];
+        if (!parent) {
+          console.log("Missing parent!");
+        } else {
+          if (!parent.children) {
+            parent.children = [];
+          }
+          parent.children.push(item);
         }
-        parent.children.push(item);
       } else {
         item.children = [];
       }

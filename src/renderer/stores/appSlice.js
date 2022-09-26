@@ -9,11 +9,11 @@ export const appSlice = createSlice({
   },
   reducers: {
     setGroup: (state, action) => {
-      state.currentGroup = action.payload;
+      state.currentGroup = action.payload.group_id;
       state.currentItems = [];
     },
     setCategory: (state, action) => {
-      state.currentCategory = action.payload;
+      state.currentCategory = action.payload.category;
       state.currentItems = [];
     },
     toggleItemSelection: (state, action) => {

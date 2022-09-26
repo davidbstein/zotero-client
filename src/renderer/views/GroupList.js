@@ -11,8 +11,8 @@ function GroupItem({group}) {
   const {selectedGroup} = appState;
   const isSelected = selectedGroup === group.id;
   const onClick = () => {
-    dispatch(appActions.setGroup(group.id));
-    dispatch(zoteroActions.getItems(group.id));
+    dispatch(appActions.setGroup({group_id: group.id}));
+    dispatch(zoteroActions.getItems({group_id: group.id}));
   }
   console.log(group);
   return <div className={`group-item ${isSelected ? 'selected' : ''}`} onClick={onClick}>
@@ -23,6 +23,9 @@ function GroupItem({group}) {
 export default function GroupList(){
   const {zotero: {groups}, app: appState} = useSelector((state) => state);
   const {currentGroup, currentCategory} = appState;
+  console.log("current group", currentGroup);
+  console.log("current category", currentCategory);
+  console.log("state", groups, appState);
   return <div id="group-list-container">
     currentGroup: {currentGroup}
     {_.sortBy(groups, (g) => g.data.name).map((group) => <GroupItem group={group} key={group.id}/>)}

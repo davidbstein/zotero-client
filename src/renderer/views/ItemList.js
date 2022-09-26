@@ -4,16 +4,21 @@ import { zoteroActions } from '@/stores/zoteroSlice'
 import _ from 'lodash'
 import "@/css/doclist.scss"
 
+function Comment({children}) {
+  // renders a <!-- comment --> in the DOM
+  return <div dangerouslySetInnerHTML={{__html: `<!-- ${children} -->`}} />
+}
+
 function ItemRow({item, fieldWidths}) {
   const data = item.data;
   const meta = item.meta;
   const children = item.children;
   return <div className='itemrow'>
-    <comment>{JSON.stringify(meta)}</comment>
-    <comment>{JSON.stringify(data)}</comment>
+    <Comment>{JSON.stringify(meta)}</Comment>
+    <Comment>{JSON.stringify(data)}</Comment>
     {
-      fieldWidths.map(([fieldname, width]) => (
-        <div className={`item-data-entry item-entry-${fieldname}`}>
+      fieldWidths.map(([fieldname, width], i) => (
+        <div key={i} className={`item-data-entry item-entry-${fieldname}`}>
           {JSON.stringify(data[fieldname])}
         </div>
       ))
@@ -42,8 +47,8 @@ export default function ItemList() {
       </style>
       <div className="itemheader">
         {
-          fieldPairs.map(([fieldname, width]) => (
-            <div className={`item-data-header item-entry-${fieldname}`}>
+          fieldPairs.map(([fieldname, width], i) => (
+            <div key={i} className={`item-data-header item-entry-${fieldname}`}>
               {fieldname}
             </div>
           ))

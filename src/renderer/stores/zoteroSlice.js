@@ -13,20 +13,22 @@ export const zoteroSlice = createSlice({
     }
   },
   reducers: {
-    getGroups: (state) => {
+    getGroups: (state, {payload, type}) => {
       state.groups = zoteroClient.groups();
       console.log("groups", state.groups);
     },
-    getItems: (state, group_id) => {
+    getItems: (state, {payload, type}) => {
+      const {group_id} = payload;
       if (group_id) {
         state.items[group_id] = zoteroClient.items(group_id);
       } else {
         state.items.user = zoteroClient.items();
       }
     },
-    getCollections: (state, group_id) => {
+    getCollections: (state, {payload, type}) => {
+      const {group_id} = payload;
       if (group_id) {
-        state.collections[group_id] = zoteroClient.collections(group_id);
+        state.collections[group_id] = zoteroClient.collections({group_id});
       } else {
         state.collections.user = zoteroClient.collections();
       }

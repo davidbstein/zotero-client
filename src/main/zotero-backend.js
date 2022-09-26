@@ -175,7 +175,7 @@ async function _doZoteroGet({prefix, path, params, last_versionNo}) {
 
 async function doZoteroGetRequest({group_id, path, params, last_versionNo}) {
   console.log(`group_id ${group_id}`);
-  const userOrGroupPrefix = group_id == undefined || group_id === USER_ID ? "users" : "group";
+  const userOrGroupPrefix = group_id == undefined || group_id === USER_ID ? "users" : "groups";
   const id_ = group_id ? group_id : USER_ID;
   const prefix = `${userOrGroupPrefix}/${id_}`;
   try {
