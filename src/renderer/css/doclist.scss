@@ -1,9 +1,38 @@
 #item-list-container {
   .itemrow, .itemheader {
+    .itemrow-icon {
+      width: 1em;
+      height: 1em;
+      overflow: hidden;
+      border: 1px solid red;
+      background: #ddd;
+      &:hover {
+        background: #ccc;
+        cursor: default;
+      }
+    }
+    .preview-span {
+      span {
+        max-width: 20em;
+        overflow: hidden;
+        display:inline-block;
+        text-overflow: ellipsis;
+        margin-right: .1em;
+      }
+    }
     display: flex;
-    border: 1px solid;
     white-space: nowrap;
     height: 1em;
+    &:nth-child(odd) {
+      background: #eef;
+    }
+    &:hover {
+      background: #ccc;
+      cursor: default;
+    }
+    &.itemrow-selected {
+      background: #bbf;
+    }
   }
   .itemheader {
     text-align: center;
@@ -20,7 +49,6 @@
     }
   }
   .item-data-entry {
-    border: 1px solid;
     flex-grow: 1;
     overflow: hidden;
   }

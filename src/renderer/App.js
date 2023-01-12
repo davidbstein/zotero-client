@@ -12,6 +12,7 @@ function getUrlParams() {
   return params;
 }
 
+
 export default function App() {
   return <div id="container"><MainView /></div>;
 }

@@ -1,29 +1,38 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { appSetWindowTitle } from '../utilities/app-interface';
 
 export const appSlice = createSlice({
   name: 'app',
   initialState: {
     currentGroup: "user",
     currentCategory: undefined,
-    currentItems: [],
+    currentItems: {},
   },
   reducers: {
     setGroup: (state, action) => {
       state.currentGroup = action.payload.group_id;
-      state.currentItems = [];
+      state.currentItems = {};
+      appSetWindowTitle(action.payload.group_name);
     },
     setCategory: (state, action) => {
       state.currentCategory = action.payload.category;
-      state.currentItems = [];
+      state.currentItems = {};
     },
     toggleItemSelection: (state, action) => {
-      const item = action.payload;
-      const index = state.currentItems.indexOf(item);
-      if (index > -1) {
-        state.currentItems.splice(index, 1);
+      const item = action.payload.item;
+      if (item.key){
+        if (state.currentItems[item.key]) {
+          delete state.currentItems[item.key];
+        } else {
+          state.currentItems[item.key] = item;
+        }
       } else {
-        state.currentItems.push(item);
+        state.currentItems = {};
       }
+    },
+    setItemSelection: (state, action) => {
+      const item = action.payload.item;
+      state.currentItems = {[item.key]: item};
     },
   }
 });

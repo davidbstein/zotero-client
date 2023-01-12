@@ -62,3 +62,9 @@ app.on("activate", () => {
 app.on("ready", () => {
   mainWindow = createMainWindow();
 });
+
+
+ipcMain.on("app-set-window-title", async (event, args) => {
+  console.log("app-set-window-title", args);
+  mainWindow.setTitle(args);
+});

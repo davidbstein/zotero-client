@@ -11,7 +11,7 @@ function GroupItem({group}) {
   const {selectedGroup} = appState;
   const isSelected = selectedGroup === group.id;
   const onClick = () => {
-    dispatch(appActions.setGroup({group_id: group.id}));
+    dispatch(appActions.setGroup({group_id: group.id, group_name: group.data.name}));
     dispatch(zoteroActions.getItems({group_id: group.id}));
   }
   console.log(group);

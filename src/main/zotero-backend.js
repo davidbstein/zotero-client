@@ -229,4 +229,3 @@ ipcMain.on("zotero-request", async (event, args) => {
   console.log("zotero-request", args);
   event.returnValue = JSON.stringify({response: await doZoteroRequest(args)});
 }); 
-
