@@ -1,26 +1,34 @@
 import React from 'react'
-import ABBREVS from './bb-journal-abbrevs'
+import ABBREVS from '@/utilities/bb-journal-abbrevs'
 
-function getAuthors(item){
-  const authors = item.data.creators
+function capitalizeFirstLetters(str){
+  return str.replace(/\b\w/g, l => l.toUpperCase());
+}
+
+export function getAuthors(item){
+  const all_authors = item.data.creators
     .map(creator => 
       `${creator.firstName?creator.firstName+" ":''}${creator.lastName||''}` || creator.name
     )
-    .filter((e)=>e).join(", ");
-  return authors?`${authors}, `:'';
+    .filter((e)=>e);
+  if (all_authors.length == 0) return '';
+  //first 5 items in all_authorts
+  if (all_authors.length >= 6) return `${all_authors.slice(0,4).join(", ")}, et al., `;
+  return `${all_authors.join(", ")}, `
 }
 
-function getPages(item){
+export function getPages(item){
   const pages = item.data.pages;
   return pages.split("-")[0];
 }
 
-function getJournal(item){
+export function getJournal(item){
   var journal = item.data.publicationTitle;
+  if (!journal) return '';
   for (const [full, abbrev] of ABBREVS) {
     journal = journal.replace(full, abbrev);
   }
-  return journal
+  return capitalizeFirstLetters(journal);
 }
 
 function bluebookJournalArticle(item){
@@ -58,7 +66,7 @@ function bluebookConferencePaper(item){
   </span>
 }
 
-export default function bluebookItem(item){
+export function bluebookItem(item){
   if (item.data.itemType === "journalArticle"){
     return bluebookJournalArticle(item);
   } else if (item.data.itemType === "conferencePaper"){

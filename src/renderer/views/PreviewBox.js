@@ -4,7 +4,8 @@ import { zoteroActions } from '@/stores/zoteroSlice'
 import { appActions } from '@/stores/appSlice'
 import _ from 'lodash'
 import "@/css/doclist.scss"
-import bluebookItem from '../utilities/item-bluebook'
+import { bluebookItem } from '../utilities/item-bluebook'
+import ItemList from './ItemList'
 
 
 export default function PreviewBox() {
@@ -20,7 +21,7 @@ export default function PreviewBox() {
     </div>
   } else {
     return <div>
-      total items: {currentItems.length}
+      {currentItems.map((item, idx) => <div key={idx}> {bluebookItem(item)}; </div>)}
     </div>
   }
 }

@@ -4,7 +4,7 @@ import { zoteroActions } from '@/stores/zoteroSlice'
 import { appActions } from '@/stores/appSlice'
 import _ from 'lodash'
 import "@/css/doclist.scss"
-import bluebookItem from '@/utilities/item-bluebook'
+import {getJournal, getAuthors, bluebookItem} from '@/utilities/item-bluebook'
 
 function Comment({children}) {
   // renders a <!-- comment --> in the DOM
@@ -25,14 +25,14 @@ function genPreviewRow({item, fieldWidths, data}) {
 
 function genItemRow({item, fieldWidths, data}) {
   return fieldWidths.map(
-    ([fieldname, width], i) => (
+    ([fieldname, width, getter], i) => (
       <div key={i} className={`item-data-entry item-entry-${fieldname}`}>
-        {JSON.stringify(data[fieldname])}
+        {JSON.stringify(getter(item))}
       </div>
     ))
 }
 
-function ItemRow({item, fieldWidths, selected}) {
+function ItemRow({item, fieldWidths, selected, previewMode=false}) {
   const dispatch = useDispatch();
   function selectItem(e){
     console.log(e.metaKey);
@@ -52,7 +52,7 @@ function ItemRow({item, fieldWidths, selected}) {
     <Comment>{JSON.stringify(meta)}</Comment>
     <Comment>{JSON.stringify(data)}</Comment>
     <div className={`itemrow-icon itemrow-icon-${data.itemType}`} />
-    {genPreviewRow({item, fieldWidths, data})}
+    {(previewMode?genPreviewRow:genItemRow)({item, fieldWidths, data})}
   </div>
 }
 
@@ -60,23 +60,22 @@ export default function ItemList() {
   const {zotero: zoteroState, app: appState} = useSelector((state) => state)
   const {currentGroup, currentCategory, currentItems} = appState;
   const initialFieldWidths = [
-    ["itemType", 25], 
-    ["title", 25], 
-    ["dateAdded", 25], 
-    ["date", 25]
+    ["type", 5, (i)=>i.data.itemType], 
+    ["title", 25, (i)=>i.data.title], 
+    ["dateAdded", 25, (i)=>i.data.dateAdded.substr(0,10)], 
+    ["journal", 25, getJournal],
   ];
-  const [fieldWidths, setFieldWidths] = React.useState(_.fromPairs(initialFieldWidths));
-  const fieldPairs=  _.toPairs(fieldWidths);
+  const [fieldWidths, setFieldWidths] = React.useState(initialFieldWidths);
   return (
     <div id="item-list-container">
       <style>
         {
-          fieldPairs.map(([field, width]) => `.item-entry-${field}{ width: ${width}%; }`)
+          fieldWidths.map(([field, width, getter]) => `.item-entry-${field}{ width: ${width}%; }`)
         }
       </style>
       <div className="itemheader">
         {
-          fieldPairs.map(([fieldname, width], i) => (
+          fieldWidths.map(([fieldname, width, getter], i) => (
             <div key={i} className={`item-data-header item-entry-${fieldname}`}>
               {fieldname}
             </div>
@@ -89,7 +88,7 @@ export default function ItemList() {
           item={item} 
           key={item.key}
           selected={currentItems[item.key]}
-          fieldWidths={fieldPairs}
+          fieldWidths={fieldWidths}
         />)
       }
     </div>

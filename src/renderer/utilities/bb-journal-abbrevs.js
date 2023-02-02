@@ -1141,9 +1141,10 @@ export default [
   [/yale law policy review/ig, "Yale L. & Pol’y Rev."],
   [/year book/ig, "Y.B."],
   [/yearbook/ig, "Y.B."],
-  [/(^|\W)of($|\W)/ig, ""],
-  [/(^|\W)the($|\W)/ig, ""],
+  [/(^|\W)of($|\W)/ig, " "],
+  [/(^|\W)the($|\W)/ig, " "],
   [/(^|\W)law($|\W)/ig, " L. "],
   [/(^|\W)and($|\W)/ig, " & "],
   [/(^|\W)review($|\W)/ig, " Rev. "],
+  [/\.s($|W)/ig, ". "],
   ]
